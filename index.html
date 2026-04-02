@@ -5,38 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مجهز فاتورة InstaPay</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f2f2f7; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
-        h2 { text-align: center; color: #1c1c1e; margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: #3a3a3c; }
-        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #c7c7cc; border-radius: 10px; font-size: 16px; box-sizing: border-box; -webkit-appearance: none; }
-        button { width: 100%; padding: 15px; background-color: #34c759; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        button:active { background-color: #248a3d; transform: scale(0.98); }
-        #output-container { margin-top: 30px; width: 100%; max-width: 400px; text-align: center; display: none; }
-        #output-image { width: 100%; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 15px; border: 1px solid #ddd; }
+        body { font-family: -apple-system, sans-serif; background-color: #f2f2f7; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        input { width: 100%; padding: 12px; margin: 10px 0 20px 0; border: 1px solid #c7c7cc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background-color: #34c759; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; }
+        #output-image { width: 100%; border-radius: 12px; margin-top: 20px; display: none; border: 1px solid #ddd; }
         canvas { display: none; }
-        .hint { font-size: 13px; color: #8e8e93; text-align: center; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>تجهيز الفاتورة</h2>
-        
-        <label>من (رقمك أو اسمك):</label>
-        <input type="text" id="sender" placeholder="مثلاً: 01274205910">
-
-        <label>إلى (رقم المستلم):</label>
-        <input type="text" id="receiver" placeholder="مثلاً: 01044205203">
-
+        <h2 style="text-align:center">تجهيز الفاتورة</h2>
+        <label>من:</label>
+        <input type="text" id="sender" placeholder="رقم المرسل">
+        <label>إلى:</label>
+        <input type="text" id="receiver" placeholder="رقم المستلم">
         <button onclick="generateInvoice()">تجهيز الصورة</button>
-        <p class="hint">بعد التجهيز، اضغط مطولاً على الصورة لحفظها</p>
     </div>
 
-    <div id="output-container">
-        <img id="output-image">
-    </div>
-
+    <img id="output-image">
     <canvas id="canvas"></canvas>
 
     <script>
@@ -45,11 +33,6 @@
             const ctx = canvas.getContext('2d');
             const sender = document.getElementById('sender').value;
             const receiver = document.getElementById('receiver').value;
-
-            if(!sender || !receiver) {
-                alert("برجاء إدخال البيانات أولاً");
-                return;
-            }
 
             const img = new Image();
             img.src = 'blank_invoice.png.PNG'; 
@@ -60,38 +43,35 @@
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
 
-                // إعدادات الخط (لون رمادي غامق مثل التطبيق الأصلي)
                 ctx.fillStyle = "#4a4a4a"; 
-                ctx.textAlign = "right";
                 
-                // 1. "من" - تم تعديل المكان لينزل في الخانة المخصصة
-                ctx.font = "500 24px Arial";
-                ctx.fillText(sender, canvas.width - 180, 545);
+                // --- تعديل أماكن النصوص لتنزل في الخانات بالظبط ---
+                
+                // 1. رقم "من" (تحريك لأسفل ولليسار قليلاً)
+                ctx.font = "500 26px Arial";
+                ctx.textAlign = "right";
+                ctx.fillText(sender, canvas.width * 0.72, canvas.height * 0.54);
 
-                // 2. "إلى" - تم تعديل المكان لينزل في الخانة المخصصة
-                ctx.fillText(receiver, canvas.width - 180, 715);
+                // 2. رقم "إلى" (تحريك لأسفل ولليسار قليلاً)
+                ctx.fillText(receiver, canvas.width * 0.72, canvas.height * 0.71);
 
-                // 3. رقم المرجع - تم تعديل المكان بجانب كلمة المرجع
+                // 3. المرجع (تحت كلمة المرجع بالظبط)
                 const ref = Math.floor(100000000 + Math.random() * 900000000);
                 ctx.font = "22px Arial";
-                ctx.textAlign = "left"; // المرجع والتاريخ يكتبون من اليسار لليمين عادةً
-                ctx.fillText(ref, 60, 785);
+                ctx.textAlign = "left";
+                ctx.fillText(ref, canvas.width * 0.08, canvas.height * 0.77);
 
-                // 4. التاريخ - تم تعديل المكان بجانب كلمة التاريخ
+                // 4. التاريخ (تحت كلمة التاريخ بالظبط)
                 const now = new Date();
                 const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
                 const dateStr = now.toLocaleString('en-GB', options).replace(',', '');
-                ctx.fillText(dateStr, 60, 845);
+                ctx.fillText(dateStr, canvas.width * 0.08, canvas.height * 0.83);
 
                 const dataUrl = canvas.toDataURL('image/png');
                 const outImg = document.getElementById('output-image');
                 outImg.src = dataUrl;
-                document.getElementById('output-container').style.display = 'block';
+                outImg.style.display = 'block';
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            };
-
-            img.onerror = function() {
-                alert("خطأ في تحميل الصورة!");
             };
         }
     </script>
