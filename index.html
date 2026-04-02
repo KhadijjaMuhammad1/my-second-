@@ -13,7 +13,7 @@
         button { width: 100%; padding: 15px; background-color: #34c759; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         button:active { background-color: #248a3d; transform: scale(0.98); }
         #output-container { margin-top: 30px; width: 100%; max-width: 400px; text-align: center; display: none; }
-        #output-image { width: 100%; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 15px; }
+        #output-image { width: 100%; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 15px; border: 1px solid #ddd; }
         canvas { display: none; }
         .hint { font-size: 13px; color: #8e8e93; text-align: center; margin-top: 10px; }
     </style>
@@ -24,10 +24,10 @@
         <h2>تجهيز الفاتورة</h2>
         
         <label>من (رقمك أو اسمك):</label>
-        <input type="text" id="sender" placeholder="مثلاً: 010xxxxxxx">
+        <input type="text" id="sender" placeholder="مثلاً: 01273339430">
 
         <label>إلى (رقم المستلم):</label>
-        <input type="text" id="receiver" placeholder="مثلاً: 012xxxxxxx">
+        <input type="text" id="receiver" placeholder="مثلاً: 01063738283">
 
         <button onclick="generateInvoice()">تجهيز الصورة</button>
         <p class="hint">بعد التجهيز، اضغط مطولاً على الصورة لحفظها</p>
@@ -52,38 +52,34 @@
             }
 
             const img = new Image();
-            img.src = 'blank_invoice.png'; // يجب أن تكون الصورة بهذا الاسم في GitHub
+            // تم ضبط الاسم ليكون PNG كابتل كما طلبت
+            img.src = 'blank_invoice.png.PNG'; 
+            img.crossOrigin = "Anonymous";
 
             img.onload = function() {
                 canvas.width = img.width;
                 canvas.height = img.height;
-
-                // رسم الصورة الأصلية
                 ctx.drawImage(img, 0, 0);
 
-                // إعدادات الخط (أسود)
-                ctx.fillStyle = "#2c2c2e";
+                // إعدادات الخط والألوان
+                ctx.fillStyle = "#333333";
                 ctx.textAlign = "right";
                 
-                // 1. كتابة "من" (الرقم العلوي)
-                ctx.font = "bold 32px Arial";
-                ctx.fillText(sender, canvas.width - 250, 520);
+                // كتابة البيانات على الصورة بالإحداثيات المناسبة للآيفون
+                ctx.font = "500 28px Arial";
+                ctx.fillText(sender, canvas.width - 200, 520);
+                ctx.fillText(receiver, canvas.width - 200, 685);
 
-                // 2. كتابة "إلى" (الرقم السفلي)
-                ctx.fillText(receiver, canvas.width - 250, 685);
+                const ref = Math.floor(10000000 + Math.random() * 90000000);
+                ctx.font = "24px Arial";
+                ctx.fillText(ref, canvas.width - 180, 835);
 
-                // 3. توليد رقم مرجع عشوائي
-                const ref = Math.floor(100000000 + Math.random() * 900000000);
-                ctx.font = "28px Arial";
-                ctx.fillText(ref, canvas.width - 210, 835);
-
-                // 4. التاريخ الحالي
                 const now = new Date();
                 const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
                 const dateStr = now.toLocaleString('en-GB', options).replace(',', '');
-                ctx.fillText(dateStr, canvas.width - 210, 895);
+                ctx.fillText(dateStr, canvas.width - 180, 895);
 
-                // إظهار النتيجة
+                // تحويل الـ Canvas لصورة قابلة للحفظ
                 const dataUrl = canvas.toDataURL('image/png');
                 const outImg = document.getElementById('output-image');
                 outImg.src = dataUrl;
@@ -93,7 +89,7 @@
             };
 
             img.onerror = function() {
-                alert("خطأ: لم يتم العثور على صورة blank_invoice.png في المستودع!");
+                alert("خطأ: لم نجد ملف blank_invoice.png.PNG\nتأكد أن الاسم في GitHub مطابق تماماً.");
             };
         }
     </script>
