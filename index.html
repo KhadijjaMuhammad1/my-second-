@@ -13,24 +13,27 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 10px;
+    margin: 0;
 }
 
 input {
     width: 90%;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 8px;
+    padding: 12px;
+    margin: 6px;
+    border-radius: 10px;
     border: 1px solid #ccc;
+    font-size: 14px;
 }
 
 button {
-    padding: 12px;
-    margin-top: 10px;
+    padding: 14px;
+    margin-top: 12px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background: #007aff;
     color: white;
     font-weight: bold;
+    font-size: 16px;
 }
 
 img {
@@ -38,6 +41,7 @@ img {
     max-width: 400px;
     margin-top: 15px;
     border-radius: 12px;
+    display: none;
 }
 </style>
 </head>
@@ -61,7 +65,7 @@ function draw() {
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
-    // ✅ الامتداد الكبير زي ما طلبت
+    // ✅ الاسم مطابق 100%
     img.src = 'blank_invoice.PNG';
 
     img.onload = function() {
@@ -70,6 +74,8 @@ function draw() {
         canvas.height = img.height;
 
         ctx.drawImage(img, 0, 0);
+
+        ctx.textBaseline = "middle";
 
         const rightX = canvas.width - 60;
         const leftX = 60;
@@ -80,8 +86,6 @@ function draw() {
         const refY = canvas.height * 0.80;
         const dateY = canvas.height * 0.86;
         const noteY = canvas.height * 0.93;
-
-        ctx.textBaseline = "middle";
 
         // ===== FROM =====
         ctx.textAlign = "right";
@@ -146,6 +150,11 @@ function draw() {
         const out = document.getElementById('res');
         out.src = canvas.toDataURL('image/png');
         out.style.display = 'block';
+    };
+
+    // ❗ مهم جدًا عشان تعرف لو في مشكلة
+    img.onerror = function() {
+        alert("الصورة مش بتتحمل ❌ تأكد من الاسم أو المكان");
     };
 }
 </script>
