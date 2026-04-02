@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InstaPay Tool</title>
+    <title>Tool</title>
     <style>
-        body { font-family: sans-serif; background: #f0f0f2; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .box { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        #res { width: 100%; max-width: 380px; margin-top: 20px; border-radius: 10px; display: none; }
+        body { font-family: sans-serif; background: #eee; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .box { background: white; padding: 20px; border-radius: 10px; width: 100%; max-width: 350px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 5px; font-weight: bold; }
+        #res { width: 100%; max-width: 380px; margin-top: 20px; display: none; }
         canvas { display: none; }
     </style>
 </head>
 <body>
     <div class="box">
-        <label>من:</label> <input type="text" id="s" placeholder="رقم المرسل">
-        <label>إلى:</label> <input type="text" id="r" placeholder="رقم المستلم">
-        <button onclick="draw()">تجهيز الفاتورة الآن</button>
+        <input type="text" id="s" placeholder="رقم المرسل">
+        <input type="text" id="r" placeholder="رقم المستلم">
+        <button onclick="draw()">تجهيز</button>
     </div>
     <img id="res">
     <canvas id="c"></canvas>
@@ -34,25 +34,25 @@
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
-                ctx.fillStyle = "#444444"; 
+                ctx.fillStyle = "#555555"; 
                 ctx.textAlign = "right";
-
-                // --- الأماكن الجديدة المظبوطة ---
                 ctx.font = "500 28px Arial";
-                // رقم "من"
-                ctx.fillText(document.getElementById('s').value, canvas.width - 250, 525);
-                // رقم "إلى"
-                ctx.fillText(document.getElementById('r').value, canvas.width - 250, 695);
 
-                // المرجع والتاريخ (تحت)
+                // أرقام تجريبية لتحت جداً عشان نصيد الخانات
+                // رقم "من"
+                ctx.fillText(document.getElementById('s').value, canvas.width - 250, 1050); 
+                // رقم "إلى"
+                ctx.fillText(document.getElementById('r').value, canvas.width - 250, 1380);
+
+                // المرجع والتاريخ
                 ctx.textAlign = "left";
-                ctx.font = "22px Arial";
+                ctx.font = "24px Arial";
                 const ref = Math.floor(100000000 + Math.random() * 900000000);
-                ctx.fillText(ref, 100, 785); // المرجع
+                ctx.fillText(ref, 180, 1550); // المرجع
 
                 const d = new Date();
-                const dateStr = d.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) + " " + d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
-                ctx.fillText(dateStr, 100, 845); // التاريخ
+                const dStr = d.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) + " " + d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+                ctx.fillText(dStr, 180, 1680); // التاريخ
 
                 const out = document.getElementById('res');
                 out.src = canvas.toDataURL('image/png');
