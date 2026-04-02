@@ -3,37 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مجهز فاتورة InstaPay</title>
+    <title>InstaPay Tool</title>
     <style>
-        body { font-family: -apple-system, sans-serif; background-color: #f2f2f7; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        input { width: 100%; padding: 12px; margin: 10px 0 20px 0; border: 1px solid #c7c7cc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background-color: #34c759; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; }
-        #output-image { width: 100%; border-radius: 12px; margin-top: 20px; display: none; border: 1px solid #ddd; }
+        body { font-family: sans-serif; background: #f0f0f2; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .box { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        #res { width: 100%; max-width: 380px; margin-top: 20px; border-radius: 10px; display: none; }
         canvas { display: none; }
     </style>
 </head>
 <body>
-
-    <div class="card">
-        <h2 style="text-align:center">تجهيز الفاتورة</h2>
-        <label>من:</label>
-        <input type="text" id="sender" placeholder="رقم المرسل">
-        <label>إلى:</label>
-        <input type="text" id="receiver" placeholder="رقم المستلم">
-        <button onclick="generateInvoice()">تجهيز الصورة</button>
+    <div class="box">
+        <label>من:</label> <input type="text" id="s" placeholder="رقم المرسل">
+        <label>إلى:</label> <input type="text" id="r" placeholder="رقم المستلم">
+        <button onclick="draw()">تجهيز الفاتورة الآن</button>
     </div>
-
-    <img id="output-image">
-    <canvas id="canvas"></canvas>
+    <img id="res">
+    <canvas id="c"></canvas>
 
     <script>
-        function generateInvoice() {
-            const canvas = document.getElementById('canvas');
+        function draw() {
+            const canvas = document.getElementById('c');
             const ctx = canvas.getContext('2d');
-            const sender = document.getElementById('sender').value;
-            const receiver = document.getElementById('receiver').value;
-
             const img = new Image();
             img.src = 'blank_invoice.png.PNG'; 
             img.crossOrigin = "Anonymous";
@@ -42,36 +34,29 @@
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
-
-                ctx.fillStyle = "#4a4a4a"; 
-                
-                // --- تعديل أماكن النصوص لتنزل في الخانات بالظبط ---
-                
-                // 1. رقم "من" (تحريك لأسفل ولليسار قليلاً)
-                ctx.font = "500 26px Arial";
+                ctx.fillStyle = "#444444"; 
                 ctx.textAlign = "right";
-                ctx.fillText(sender, canvas.width * 0.72, canvas.height * 0.54);
 
-                // 2. رقم "إلى" (تحريك لأسفل ولليسار قليلاً)
-                ctx.fillText(receiver, canvas.width * 0.72, canvas.height * 0.71);
+                // --- الأماكن الجديدة المظبوطة ---
+                ctx.font = "500 28px Arial";
+                // رقم "من"
+                ctx.fillText(document.getElementById('s').value, canvas.width - 250, 525);
+                // رقم "إلى"
+                ctx.fillText(document.getElementById('r').value, canvas.width - 250, 695);
 
-                // 3. المرجع (تحت كلمة المرجع بالظبط)
-                const ref = Math.floor(100000000 + Math.random() * 900000000);
-                ctx.font = "22px Arial";
+                // المرجع والتاريخ (تحت)
                 ctx.textAlign = "left";
-                ctx.fillText(ref, canvas.width * 0.08, canvas.height * 0.77);
+                ctx.font = "22px Arial";
+                const ref = Math.floor(100000000 + Math.random() * 900000000);
+                ctx.fillText(ref, 100, 785); // المرجع
 
-                // 4. التاريخ (تحت كلمة التاريخ بالظبط)
-                const now = new Date();
-                const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-                const dateStr = now.toLocaleString('en-GB', options).replace(',', '');
-                ctx.fillText(dateStr, canvas.width * 0.08, canvas.height * 0.83);
+                const d = new Date();
+                const dateStr = d.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) + " " + d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+                ctx.fillText(dateStr, 100, 845); // التاريخ
 
-                const dataUrl = canvas.toDataURL('image/png');
-                const outImg = document.getElementById('output-image');
-                outImg.src = dataUrl;
-                outImg.style.display = 'block';
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                const out = document.getElementById('res');
+                out.src = canvas.toDataURL('image/png');
+                out.style.display = 'block';
             };
         }
     </script>
