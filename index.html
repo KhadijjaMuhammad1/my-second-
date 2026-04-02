@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مجهز فاتورة InstaPay</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f2f2f7; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
+        h2 { text-align: center; color: #1c1c1e; margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #3a3a3c; }
+        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #c7c7cc; border-radius: 10px; font-size: 16px; box-sizing: border-box; -webkit-appearance: none; }
+        button { width: 100%; padding: 15px; background-color: #34c759; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:active { background-color: #248a3d; transform: scale(0.98); }
+        #output-container { margin-top: 30px; width: 100%; max-width: 400px; text-align: center; display: none; }
+        #output-image { width: 100%; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 15px; }
+        canvas { display: none; }
+        .hint { font-size: 13px; color: #8e8e93; text-align: center; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>تجهيز الفاتورة</h2>
+        
+        <label>من (رقمك أو اسمك):</label>
+        <input type="text" id="sender" placeholder="مثلاً: 010xxxxxxx">
+
+        <label>إلى (رقم المستلم):</label>
+        <input type="text" id="receiver" placeholder="مثلاً: 012xxxxxxx">
+
+        <button onclick="generateInvoice()">تجهيز الصورة</button>
+        <p class="hint">بعد التجهيز، اضغط مطولاً على الصورة لحفظها</p>
+    </div>
+
+    <div id="output-container">
+        <img id="output-image">
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        function generateInvoice() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const sender = document.getElementById('sender').value;
+            const receiver = document.getElementById('receiver').value;
+
+            if(!sender || !receiver) {
+                alert("برجاء إدخال البيانات أولاً");
+                return;
+            }
+
+            const img = new Image();
+            img.src = 'blank_invoice.png'; // يجب أن تكون الصورة بهذا الاسم في GitHub
+
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // رسم الصورة الأصلية
+                ctx.drawImage(img, 0, 0);
+
+                // إعدادات الخط (أسود)
+                ctx.fillStyle = "#2c2c2e";
+                ctx.textAlign = "right";
+                
+                // 1. كتابة "من" (الرقم العلوي)
+                ctx.font = "bold 32px Arial";
+                ctx.fillText(sender, canvas.width - 250, 520);
+
+                // 2. كتابة "إلى" (الرقم السفلي)
+                ctx.fillText(receiver, canvas.width - 250, 685);
+
+                // 3. توليد رقم مرجع عشوائي
+                const ref = Math.floor(100000000 + Math.random() * 900000000);
+                ctx.font = "28px Arial";
+                ctx.fillText(ref, canvas.width - 210, 835);
+
+                // 4. التاريخ الحالي
+                const now = new Date();
+                const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+                const dateStr = now.toLocaleString('en-GB', options).replace(',', '');
+                ctx.fillText(dateStr, canvas.width - 210, 895);
+
+                // إظهار النتيجة
+                const dataUrl = canvas.toDataURL('image/png');
+                const outImg = document.getElementById('output-image');
+                outImg.src = dataUrl;
+                document.getElementById('output-container').style.display = 'block';
+                
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            };
+
+            img.onerror = function() {
+                alert("خطأ: لم يتم العثور على صورة blank_invoice.png في المستودع!");
+            };
+        }
+    </script>
+</body>
+</html>
