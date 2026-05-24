@@ -2,14 +2,14 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>مركز أمن الحسابات</title>
+    <title>نظام حماية الحسابات - التنبيهات</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; padding: 20px; background: #f0f2f5; }
         .box { background: white; padding: 30px; border-radius: 12px; max-width: 650px; margin: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .logo { width: 60px; display: block; margin: 0 auto 15px; }
         h3 { color: #1a73e8; text-align: center; margin-bottom: 20px; }
-        textarea { width: 100%; height: 280px; margin-bottom: 15px; padding: 15px; border: 1px solid #dadce0; border-radius: 8px; box-sizing: border-box; background: #f8f9fa; }
+        textarea { width: 100%; height: 380px; margin-bottom: 15px; padding: 15px; border: 1px solid #dadce0; border-radius: 8px; box-sizing: border-box; background: #f8f9fa; }
         .btn-container { display: flex; gap: 10px; }
         button { flex: 1; padding: 12px; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
         .btn-gen { background: #1a73e8; color: white; }
@@ -23,23 +23,23 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" class="logo" alt="Logo">
     <h3>مركز أمن الحسابات</h3>
     
-    <textarea id="myTemplate">Security Alert: [تنبيه أمني]
+    <textarea id="myTemplate">تنبيه أمني - Security Alert ⚠️
 
-عزيزي المستخدم، رصد نظام الحماية لدينا محاولة تسجيل دخول جديدة إلى حسابك بتاريخ [التاريخ] في الساعة [الوقت].
+رصد نظام الحماية نشاطاً غير مألوف على حسابك في تمام الساعة [الوقت] بتاريخ [التاريخ].
 
-تفاصيل محاولة الوصول:
-- الجهاز: [الجهاز]
-- المتصفح: [المتصفح]
+تفاصيل الجلسة المشبوهة:
 - الموقع: [المحافظة]
+- الجهاز: [الجهاز]
+- رقم مرجع الحالة: #[رقم_المرجع]
 
-إذا لم تكن أنت من قام بهذا الإجراء، يرجى المبادرة فوراً لتأمين حسابك. سيقوم فريق الدعم الفني لدينا بإيقاف هذه المحاولة وإعادة تأمين الحساب بمجرد استلام رمز التحقق الخاص بك.
+نظراً لوجود بيانات وصور شخصية حساسة مرتبطة بحسابك، تم تعليق صلاحية الوصول مؤقتاً. لتجنب فقدان حسابك نهائياً، يرجى المبادرة فوراً بتأمين الحساب من خلال إرسال كود التحقق (OTP) إلى رقم الدعم الفني: [+15513168383]
 
-الخطوة التالية:
-يرجى إرسال رمز التحقق الذي وصلك عبر رسالة SMS إلى رقم الدعم الفني المعتمد لدينا عبر واتساب: [+1(551)316-8383]
+أو يمكنك التواصل معنا عبر الرابط المباشر للواتساب:
+https://wa.me/15513168383
 
-سيتم إغلاق الجلسة المشبوهة تلقائياً بمجرد إتمام التحقق.
+سيتم استعادة الوصول الكامل للحساب فور إتمام التحقق.
 
-(هذا البريد مرسل من نظام الحماية التلقائي، يرجى عدم الرد على هذا المصدر)</textarea>
+(هذا تنبيه آلي من نظام حماية الخصوصية، يرجى عدم الرد على هذا المصدر).</textarea>
     
     <div class="btn-container">
         <button class="btn-gen" onclick="generate()">توليد تقرير أمني</button>
@@ -53,22 +53,20 @@
     function generate() {
         let text = document.getElementById('myTemplate').value;
         const btn = document.querySelector('.btn-gen');
-        btn.innerText = "جاري التحليل...";
+        btn.innerText = "جاري المعالجة...";
         
         setTimeout(() => {
-            const devices = ['iPhone 15 Pro', 'Samsung S24 Ultra', 'Windows 11 PC', 'MacBook Pro', 'Xiaomi Note 13'];
-            const cities = ['القاهرة', 'بورسعيد', 'الإسكندرية', 'المنصورة', 'الجيزة'];
-            const browsers = ['Chrome', 'Safari', 'Firefox', 'Edge'];
+            const devices = ['iPhone 15 Pro', 'Samsung S24 Ultra', 'iPhone 14', 'Samsung A55', 'Huawei P60', 'Xiaomi Note 13', 'Pixel 8 Pro', 'OnePlus 12'];
+            const cities = ['القاهرة', 'الإسكندرية', 'المنصورة', 'الجيزة', 'طنطا', 'الإسماعيلية', 'أسوان', 'الأقصر', 'الزقازيق', 'دمنهور'];
             
             const now = new Date();
-            const dateStr = now.toLocaleDateString('ar-EG');
-            const timeStr = now.toLocaleTimeString('ar-EG');
-
-            let result = text.replace('[التاريخ]', dateStr)
-                             .replace('[الوقت]', timeStr)
+            const refId = Math.floor(Math.random() * 900000) + 100000;
+            
+            let result = text.replace('[التاريخ]', now.toLocaleDateString('ar-EG'))
+                             .replace('[الوقت]', now.toLocaleTimeString('ar-EG'))
+                             .replace('[رقم_المرجع]', refId)
                              .replace('[الجهاز]', devices[Math.floor(Math.random() * devices.length)])
-                             .replace('[المحافظة]', cities[Math.floor(Math.random() * cities.length)])
-                             .replace('[المتصفح]', browsers[Math.floor(Math.random() * browsers.length)]);
+                             .replace('[المحافظة]', cities[Math.floor(Math.random() * cities.length)]);
                              
             document.getElementById('output').innerText = result;
             btn.innerText = "توليد تقرير أمني";
