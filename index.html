@@ -2,43 +2,41 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Youssef Index Control</title>
     <style>
-        body { background: #111; color: #0f0; font-family: monospace; padding: 20px; }
-        #console { border: 1px solid #333; padding: 10px; height: 350px; overflow-y: scroll; margin-top: 10px; background: #000; }
-        input { background: #222; color: #fff; border: 1px solid #444; padding: 10px; width: 70%; }
-        button { padding: 10px 20px; cursor: pointer; background: #0f0; color: #000; border: none; font-weight: bold; }
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        @keyframes blink { 50% { opacity: 0; } }
+        h2 { font-size: 18px; animation: blink 1s infinite; margin-bottom: 10px; }
+        .container { width: 100%; max-width: 400px; }
+        #console { border: 1px solid #0f0; padding: 10px; height: 200px; overflow-y: auto; font-size: 12px; margin-top: 10px; background: #050505; }
+        input { background: #111; color: #0f0; border: 1px solid #0f0; padding: 8px; width: 60%; }
+        button { padding: 8px; cursor: pointer; background: #0f0; color: #000; border: none; font-weight: bold; width: 30%; }
     </style>
 </head>
 <body>
 
-    <h2>Youssef Index Control</h2>
-    <input type="text" id="targetInput" placeholder="اكتب البيانات للبحث...">
-    <button onclick="executeAction()">INITIATE</button>
-
-    <div id="console"></div>
+    <div class="container">
+        <h2>YOUSSEF INDEX [ACTIVE]</h2>
+        <input type="text" id="targetInput" placeholder="TARGET ID...">
+        <button onclick="executeAction()">INITIATE</button>
+        <div id="console"></div>
+    </div>
 
     <script>
-        // إعدادات البوت والجروب
         const token = "8980175969:AAG9MwlMTxSLejCZoDYUQKRdlkvJMZrCNmA";
-        const chatId = "-1003514744905";
-        const botId = "8980175969"; // الآيدي الخاص ببوتك
+        const targetBotId = "7259204597"; 
 
         async function executeAction() {
             const input = document.getElementById('targetInput').value;
             const log = document.getElementById('console');
             if (!input) return;
 
-            // 1. رسالة "الاستفزاز"
-            const waitMessage = "اصبر يا كسمك، يتم السحب برعاية اندكس...";
-            log.innerHTML += `<div>> ${waitMessage}</div>`;
-
-            // 2. إرسال للجروب
-            await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(input)}`);
-
-            log.innerHTML += "<div>> جاري المعالجة...</div>";
+            log.innerHTML += `<div>> SYNCING: ${input} ...</div>`;
             
-            // 3. مراقبة الرد
+            // إرسال الأمر
+            await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${targetBotId}&text=${encodeURIComponent(input)}`);
+
+            log.innerHTML += "<div>> اصبر يا كسمك، يتم السحب برعاية اندكس...</div>";
+            
             let attempts = 0;
             let checkInterval = setInterval(async () => {
                 attempts++;
@@ -47,19 +45,16 @@
                 
                 if (data.result && data.result.length > 0) {
                     const lastMsg = data.result[data.result.length - 1].message;
-                    
-                    // التحقق من أن الرد من البوت الآخر (ليس البوت الخاص بك)
-                    if (lastMsg.chat.id == chatId && lastMsg.text && lastMsg.from.id != botId) {
-                        log.innerHTML += `<div style='color: white;'>[RESULT]: ${lastMsg.text}</div>`;
+                    if (lastMsg && lastMsg.from.id == targetBotId) {
+                        log.innerHTML += `<div style='color: #fff;'>[>>] DATA: ${lastMsg.text}</div>`;
                         clearInterval(checkInterval);
                     }
                 }
-
-                if (attempts > 15) { 
-                    log.innerHTML += "<div style='color: red;'>[TIMEOUT]: لم يتم استلام رد.</div>";
+                if (attempts > 10) { 
+                    log.innerHTML += "<div style='color: red;'>[!] TIMEOUT.</div>";
                     clearInterval(checkInterval);
                 }
-            }, 2000); // الفحص كل ثانيتين
+            }, 2000);
         }
     </script>
 </body>
