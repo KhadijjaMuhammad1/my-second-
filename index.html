@@ -3,63 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VENOM | Style & Fashion</title>
+    <title>VENOM | High Fashion</title>
+    <link rel="icon" href="profile.png"> 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         
         body {
-            background-color: #050505;
+            background: #000;
+            background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #000 100%);
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 10px;
+            padding: 20px;
         }
 
         .card {
-            background: #0f0f0f;
-            padding: 40px 25px;
-            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            padding: 50px 30px;
+            border-radius: 40px;
             text-align: center;
             width: 100%;
-            max-width: 350px;
-            border: 1px solid #222;
+            max-width: 360px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
         .profile-img {
-            width: 130px; height: 130px;
-            border-radius: 20px;
-            border: 2px solid #d32f2f;
-            margin-bottom: 20px;
-            object-fit: cover;
-            transition: transform 0.3s;
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.5s;
         }
 
-        .brand-name { font-size: 36px; font-weight: 900; margin-bottom: 5px; letter-spacing: 3px; }
-        .slogan { color: #d32f2f; font-size: 14px; margin-bottom: 25px; text-transform: uppercase; }
+        .brand-name { font-size: 40px; font-weight: 900; margin-bottom: 5px; letter-spacing: 4px; }
+        .slogan { color: #ff0055; font-size: 14px; margin-bottom: 35px; text-transform: uppercase; letter-spacing: 2px; }
 
         .social-link {
-            display: flex; align-items: center; justify-content: center;
-            background: #1a1a1a;
-            padding: 18px; margin: 12px 0;
-            border-radius: 12px; text-decoration: none;
+            display: flex; flex-direction: column; align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px; margin: 15px 0;
+            border-radius: 20px; text-decoration: none;
             color: #fff; transition: all 0.3s;
-            border: 1px solid #333;
-            font-weight: bold;
-            position: relative;
-            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* تأثير اللمعة */
-        .social-link:hover { background: #d32f2f; border-color: #d32f2f; transform: scale(1.02); }
-        
-        .social-link i { font-size: 24px; margin-left: 15px; }
+        /* التأثير الفاخر عند الضغط */
+        .social-link:active { transform: scale(0.95); }
+        .social-link:hover { 
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
 
-        .footer-note { margin-top: 30px; font-size: 12px; color: #555; }
+        .link-text { font-weight: 700; font-size: 17px; margin-top: 8px; }
+        .sub-text { font-size: 12px; color: #888; margin-top: 2px; }
+        
+        .footer-note { margin-top: 40px; font-size: 10px; color: #444; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -67,19 +72,21 @@
     <div class="card">
         <img src="profile.png" alt="Venom Style" class="profile-img">
         <div class="brand-name">VENOM</div>
-        <div class="slogan">إطلالة تفرض سيطرتها</div>
+        <div class="slogan">إطلالة لا تقبل المنافسة</div>
         
         <a href="https://www.facebook.com/share/19NXsm4Wjh/?mibextid=wwXIfr" class="social-link" target="_blank">
-            <i class="fab fa-facebook" style="color: #1877f2;"></i>
-            <span>تابعنا على فيسبوك</span>
+            <i class="fab fa-facebook" style="color: #4267B2;"></i>
+            <span class="link-text">تابعنا على فيسبوك</span>
+            <span class="sub-text">انضم لمجتمع الأناقة الخاص بنا</span>
         </a>
         
         <a href="#" class="social-link">
-            <i class="fab fa-instagram" style="color: #e1306c;"></i>
-            <span>تصفح أحدث التشكيلات</span>
+            <i class="fab fa-instagram" style="color: #E1306C;"></i>
+            <span class="link-text">تصفح التشكيلة الجديدة</span>
+            <span class="sub-text">أحدث صيحات الموضة 2026</span>
         </a>
 
-        <div class="footer-note">© 2026 VENOM FASHION. جميع الحقوق محفوظة</div>
+        <div class="footer-note">VENOM FASHION © 2026</div>
     </div>
 
 </body>
