@@ -2,89 +2,76 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Venom | Official</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VENOM | Official</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             background-color: #000;
             color: #fff;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
         }
 
+        /* جعل الكارد صغير ومتناسب */
         .card {
-            background: rgba(20, 20, 20, 0.9);
-            padding: 30px;
-            border-radius: 20px;
+            background: #111;
+            padding: 20px;
+            border-radius: 15px;
             text-align: center;
-            width: 320px;
-            border: 2px solid #555;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            width: 85%;
+            max-width: 300px;
+            border: 1px solid #333;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
         }
 
-        /* تنسيق الصورة الشخصية */
         .profile-img {
-            width: 120px;
-            height: 120px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            border: 3px solid #d32f2f;
-            margin: 15px auto;
+            border: 2px solid #d32f2f;
+            margin: 10px auto;
             display: block;
-            object-fit: cover;
         }
 
-        .welcome-text {
-            font-size: 20px;
-            color: #d32f2f;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .brand-name {
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+        .welcome-text { font-size: 16px; color: #d32f2f; margin-bottom: 5px; }
+        .brand-name { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
 
         .social-link {
             display: flex;
             align-items: center;
-            background: #111;
-            padding: 12px;
+            justify-content: center;
+            background: #000;
+            padding: 10px;
             margin: 8px 0;
-            border-radius: 10px;
+            border-radius: 8px;
             text-decoration: none;
             color: white;
-            border: 1px solid #333;
+            border: 1px solid #222;
+            font-size: 14px;
             transition: 0.3s;
         }
 
-        .social-link:hover {
-            background: #d32f2f;
-            transform: scale(1.02);
-        }
+        .social-link:hover { background: #d32f2f; }
+        .social-link i { margin-left: 10px; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <div class="welcome-text">مرحباً بك في عالم VENOM</div>
-
-        <img src="images/profile.jpg" alt="Venom Profile" class="profile-img">
-
+        <div class="welcome-text">مرحباً بك في عالم</div>
+        <img src="profile.png" alt="Profile" class="profile-img">
         <div class="brand-name">VENOM</div>
         
         <a href="https://www.facebook.com/share/19NXsm4Wjh/?mibextid=wwXIfr" class="social-link" target="_blank">
-            <i class="fab fa-facebook" style="margin-left:10px;"></i> فيسبوك
+            <i class="fab fa-facebook"></i> فيسبوك
         </a>
         <a href="#" class="social-link">
-            <i class="fab fa-instagram" style="margin-left:10px;"></i> انستجرام
+            <i class="fab fa-instagram"></i> انستجرام
         </a>
     </div>
 
