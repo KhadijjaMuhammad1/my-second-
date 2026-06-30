@@ -2,57 +2,58 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>VENOM | 3D Experience</title>
+    <title>VENOM | Official</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { margin: 0; background: #000; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        canvas { display: block; }
-        .enter-btn { 
-            position: absolute; bottom: 10%; padding: 15px 40px; 
-            background: transparent; color: #fff; border: 2px solid #d32f2f; 
-            cursor: pointer; font-size: 20px; z-index: 10; border-radius: 50px;
+        body { margin: 0; background: #000; color: #fff; font-family: 'Cairo', sans-serif; overflow: hidden; }
+        .page { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
+        
+        /* صفحة الدخول */
+        #welcome-page { position: absolute; width: 100%; z-index: 10; background: #000; }
+        .venom-text { 
+            font-size: 80px; font-weight: 900; color: #d32f2f; 
+            text-shadow: 5px 5px 0px #333, 10px 10px 0px #000; /* تأثير 3D للنص */
+            margin-bottom: 40px; cursor: default;
         }
+        .enter-btn { padding: 15px 40px; border: 2px solid #d32f2f; background: transparent; color: #fff; cursor: pointer; font-size: 18px; border-radius: 10px; }
         .enter-btn:hover { background: #d32f2f; }
+
+        /* صفحة الروابط */
+        #main-page { display: none; opacity: 0; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); }
+        .card { background: rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; text-align: center; width: 300px; border: 1px solid rgba(255,255,255,0.2); }
+        .social-link { display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); padding: 15px; margin: 15px 0; border-radius: 12px; text-decoration: none; color: #fff; }
+        .social-link i { font-size: 24px; margin-left: 15px; }
     </style>
 </head>
 <body>
 
-    <!-- الجزء الخاص بالـ 3D -->
-    <div id="canvas-container"></div>
-    <button class="enter-btn" onclick="window.location.href='main.html'">ENTER</button>
+    <!-- صفحة الدخول -->
+    <div id="welcome-page" class="page">
+        <div class="venom-text">VENOM</div>
+        <button class="enter-btn" onclick="enterSite()">ENTER</button>
+    </div>
 
-    <!-- استدعاء مكتبة Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- صفحة الروابط -->
+    <div id="main-page" class="page">
+        <div class="card">
+            <h2 style="color: #ff0055;">بسم الله.. أناقة تليق بك</h2>
+            <a href="https://www.facebook.com/share/19NXsm4Wjh/?mibextid=wwXIfr" class="social-link" target="_blank">
+                <i class="fab fa-facebook" style="color: #4267B2;"></i>
+                <span>فيسبوك</span>
+            </a>
+        </div>
+    </div>
+
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // إنشاء شكل بسيط كبديل للكلمة (أو يمكن تحميل خط 3D)
-        const geometry = new THREE.TorusGeometry(3, 1, 16, 100);
-        const material = new THREE.MeshPhongMaterial({ color: 0xd32f2f, shininess: 100 });
-        const venomObject = new THREE.Mesh(geometry, material);
-        scene.add(venomObject);
-
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(1, 1, 1);
-        scene.add(light);
-        scene.add(new THREE.AmbientLight(0x404040));
-
-        camera.position.z = 10;
-
-        // التفاعل مع حركة الماوس أو اللمس
-        document.addEventListener('mousemove', (e) => {
-            venomObject.rotation.y = (e.clientX / window.innerWidth - 0.5) * 2;
-            venomObject.rotation.x = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
-
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+        function enterSite() {
+            document.getElementById('welcome-page').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('welcome-page').style.display = 'none';
+                document.getElementById('main-page').style.display = 'flex';
+                document.getElementById('main-page').style.opacity = '1';
+            }, 1000);
         }
-        animate();
     </script>
 </body>
 </html>
